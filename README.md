@@ -1,7 +1,7 @@
 # weather-dashboard
 
 
-![License Badge](https://img.shields.io/github/license/mmeii/weather-dashboard) ![Top Language](https://img.shields.io/github/languages/top/mmeii/weather-dashboard)
+![License Badge](https://img.shields.io/github/license/chaunnybby7/weather-dashboard) ![Top Language](https://img.shields.io/github/languages/top/chaunnybby7/weather-dashboard)
 
 This is a weather dashboard with form inputs that will run in the browser and feature dynamically updated HTML and CSS. 
 It allows the user to search to view weather outlook for multiple cities. Suitable for travel or events planning. 
