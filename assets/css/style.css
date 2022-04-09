@@ -14,14 +14,19 @@ h1 {
     height: 130px!important;
 }
 
-#cityDetail,
+#cityStyle,
 #uvIndexColor,
 li {
     color: #4D4F53!important;
 }
 
+.list-group-item {
+    cursor: pointer;
+}
+
+
 #searchResults,
-#cityDetail,
+#cityStyle,
 .card {
     background-color: #ffffff!important;
 }

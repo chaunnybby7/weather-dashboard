@@ -1,63 +1,70 @@
 
-
-var apiKey = "d1e2d0763204896fd894698f5c6e27ee";
-var today = moment().format('L');
+// Assign variables 
+// Input of my own API key 
+var apiKey = "e5dbc2acad8da45e8591c8b3e164c083";
+// Moment.js time format
+var today = moment().format('LL');
+// created an array for searched history 
 var searchHistoryList = [];
 
-// function for current condition
-function currentCondition(city) {
+
+
+// function for current weather condition 
+function currentWeather(city) {
 
     var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
 
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function(cityWeatherResponse) {
-        console.log(cityWeatherResponse);
+    }).then(function(cityWeatherResults) {
+        console.log(cityWeatherResults);
         
         $("#weatherContent").css("display", "block");
-        $("#cityDetail").empty();
+        $("#cityStyle").empty();
         
-        var iconCode = cityWeatherResponse.weather[0].icon;
+        var iconCode = cityWeatherResults.weather[0].icon;
         var iconURL = `https://openweathermap.org/img/w/${iconCode}.png`;
 
         //city name and date
         // an icon representation of weather conditions
-        // the temperature, the humidity, the wind speed
+        // the temperature, the humidity
+        // the wind speed
         var currentCity = $(`
             <h2 id="currentCity">
-                ${cityWeatherResponse.name} ${today} <img src="${iconURL}" alt="${cityWeatherResponse.weather[0].description}" />
+                ${cityWeatherResults.name} ${today} <img src="${iconURL}" alt="${cityWeatherResults.weather[0].description}" />
             </h2>
-            <p>Temperature: ${cityWeatherResponse.main.temp} °F</p>
-            <p>Humidity: ${cityWeatherResponse.main.humidity}\%</p>
-            <p>Wind Speed: ${cityWeatherResponse.wind.speed} MPH</p>
+            <p>Temperature: ${cityWeatherResults.main.temp} °F</p>
+            <p>Humidity: ${cityWeatherResults.main.humidity}\%</p>
+            <p>Wind Speed: ${cityWeatherResults.wind.speed} MPH</p>
         `);
 
-        $("#cityDetail").append(currentCity);
+        $("#cityStyle").append(currentCity);
 
         // UV index
-        var lat = cityWeatherResponse.coord.lat;
-        var lon = cityWeatherResponse.coord.lon;
+        var lat = cityWeatherResults.coord.lat;
+        var lon = cityWeatherResults.coord.lon;
         var uviQueryURL = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
         $.ajax({
             url: uviQueryURL,
             method: "GET"
-        }).then(function(uviResponse) {
-            console.log(uviResponse);
+        }).then(function(uviResults) {
+            console.log(uviResults);
 
-            var uvIndex = uviResponse.value;
+            var uvIndex = uviResults.value;
             var uvIndexP = $(`
                 <p>UV Index: 
                     <span id="uvIndexColor" class="px-2 py-2 rounded">${uvIndex}</span>
                 </p>
             `);
 
-            $("#cityDetail").append(uvIndexP);
+            $("#cityStyle").append(uvIndexP);
 
-            futureCondition(lat, lon);
+            futureWeather(lat, lon);
 
-            // UV index: color that indicates whether the conditions are favorable, moderate, or severe
+            // WHEN I view the UV index
+            // THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
             // 0-2 green#3EA72D, 3-5 yellow#FFF300, 6-7 orange#F18B00, 8-10 red#E53210, 11+violet#B567A4
             if (uvIndex >= 0 && uvIndex <= 2) {
                 $("#uvIndexColor").css("background-color", "#3EA72D").css("color", "white");
@@ -75,13 +82,13 @@ function currentCondition(city) {
 }
 
 // function for future condition
-function futureCondition(lat, lon) {
+function futureWeather(lat, lon) {
 
-    // 5-day forecast
-    var futureURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
+    // THEN I am presented with a 5-day forecast
+    var futureForecastURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
 
     $.ajax({
-        url: futureURL,
+        url: futureForecastURL,
         method: "GET"
     }).then(function(futureResponse) {
         console.log(futureResponse);
@@ -121,11 +128,13 @@ function futureCondition(lat, lon) {
 }
 
 // add on click event listener 
+ 
 $("#searchBtn").on("click", function(event) {
     event.preventDefault();
-
+   
+       
     var city = $("#enterCity").val().trim();
-    currentCondition(city);
+    currentWeather(city);
     if (!searchHistoryList.includes(city)) {
         searchHistoryList.push(city);
         var searchedCity = $(`
@@ -133,6 +142,7 @@ $("#searchBtn").on("click", function(event) {
             `);
         $("#searchHistory").append(searchedCity);
     };
+   
     
     localStorage.setItem("city", JSON.stringify(searchHistoryList));
     console.log(searchHistoryList);
@@ -142,7 +152,7 @@ $("#searchBtn").on("click", function(event) {
 // THEN I am again presented with current and future conditions for that city
 $(document).on("click", ".list-group-item", function() {
     var listCity = $(this).text();
-    currentCondition(listCity);
+    currentWeather(listCity);
 });
 
 // WHEN I open the weather dashboard
@@ -153,7 +163,7 @@ $(document).ready(function() {
     if (searchHistoryArr !== null) {
         var lastSearchedIndex = searchHistoryArr.length - 1;
         var lastSearchedCity = searchHistoryArr[lastSearchedIndex];
-        currentCondition(lastSearchedCity);
+        currentWeather(lastSearchedCity);
         console.log(`Last searched city: ${lastSearchedCity}`);
     }
 });
