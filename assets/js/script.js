@@ -142,11 +142,31 @@ $("#searchBtn").on("click", function(event) {
             `);
         $("#searchHistory").append(searchedCity);
     };
-   
+    
+
     
     localStorage.setItem("city", JSON.stringify(searchHistoryList));
     console.log(searchHistoryList);
 });
+
+$(document).on('keypress', function (e) {
+    if (e.which == 13) {
+        var city = $("#enterCity").val().trim();
+        currentWeather(city);
+        if (!searchHistoryList.includes(city)) {
+            searchHistoryList.push(city);
+            var searchedCity = $(`
+                <li class="list-group-item">${city}</li>
+                `);
+            $("#searchHistory").append(searchedCity);
+        };
+
+
+        localStorage.setItem("city", JSON.stringify(searchHistoryList));
+        console.log(searchHistoryList);
+    }
+});
+
 
 // WHEN I click on a city in the search history
 // THEN I am again presented with current and future conditions for that city
