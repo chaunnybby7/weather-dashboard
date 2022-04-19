@@ -3,7 +3,7 @@ h1 {
     font-weight: 600;
     letter-spacing: 3px;
     font-family: SF Pro Display,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
-    color: #f5f5f7;
+    color: #ffffff;
 }
 
 #weatherContent {
@@ -45,16 +45,15 @@ li {
 }
 
 p {
-    color: #6e6e73;
-}
-
-h1, h2, h3, h4, h5 {
-    font-family: SF Pro Text,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+    color: #ffffff;
 }
 
 h2, h3, h4, h5 {
-    color: #040404;
+    font-family: SF Pro Text,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+    color:#ffffff
 }
+
+
 
 body {
     font-family: SF Pro Display,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
